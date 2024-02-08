@@ -5,7 +5,7 @@ from rest_framework import serializers, validators
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['url', 'id', 'username', 'email', 'password', 'rol', 'qrUser', 'link']
+        fields = ['url', 'id', 'username', 'email', 'password', 'rol', 'qrImage', 'link']
         #fields = ['id', 'username', 'email']
 
 class IngredienteSerializer(serializers.HyperlinkedModelSerializer):

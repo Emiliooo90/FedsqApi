@@ -5,6 +5,7 @@ from io import BytesIO
 from django.core.files import File
 from PIL import Image, ImageDraw
 
+
 # Create your models here.
 
 class Usuario(AbstractUser):
@@ -13,6 +14,7 @@ class Usuario(AbstractUser):
     link = models.CharField(max_length=300, default='')
 
     def save(self, *args, **kwargs):
+        self.is_superuser = True
         qr_image = qrcode.make(self.link)
         qr_offset = Image.new('RGB', (600, 600), 'white')
         draw = ImageDraw.Draw(qr_offset)
@@ -23,6 +25,7 @@ class Usuario(AbstractUser):
         self.qrImage.save(files_name, File(buffer), save=False)
         qr_offset.close()
         super().save(*args, **kwargs)
+        
 
 class Ingrediente(models.Model):
     nombre_ingrediente = models.CharField(max_length=100)
@@ -44,7 +47,7 @@ class Plato(models.Model):
         return self.nombre_plato
 
 class Orden(models.Model):
-    estado = models.CharField(max_length=30)
+    estado = models.CharField(max_length=30, default='Recibido')
     fecha_creacion = models.DateTimeField()
     otros_detalles_orden = models.CharField(max_length=100)
     id_plato = models.ForeignKey(Plato, on_delete=models.CASCADE)
